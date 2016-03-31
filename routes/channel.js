@@ -51,12 +51,14 @@ function getChannel(channelName, cb) {
           var description = data.items[0].snippet.description;
           var thumbnail = data.items[0].snippet.thumbnails.medium.url;
           var viewCount = data.items[0].statistics.viewCount;
+          var url = 'https://www.youtube.com/watch?v=' + data.items[0].id;
           cumVideoViews += parseInt(viewCount);
 
           channel.videos.push({
             title: title,
             description: description,
             thumbnail: thumbnail,
+            url: url,
             viewCount: viewCount
           });
 
