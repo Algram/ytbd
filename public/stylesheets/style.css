@@ -4,4 +4,10 @@ body {
 a {
   color: #00B7FF; }
 
+.panel-heading {
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; }
+
 /*# sourceMappingURL=style.css.map */
