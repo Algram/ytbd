@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    script(src="/javascripts/loadVideos.js")
     #page-wrapper
       .row
         .col-lg-12
@@ -8,7 +9,7 @@ block content
         // /.col-lg-12
       // /.row
       
-      .row
+      .row.videos
         .col-lg-3
           .panel.panel-default
             .panel-heading
@@ -29,55 +30,6 @@ block content
                     li.divider                         
                     li
                       a(href='#') Separated link
-            // /.panel-heading
-            .panel-body
-              #addvideohere
-            // /.panel-body
-          // /.panel
-        // /.col-lg-8
-
-        .col-lg-3
-          .panel.panel-default
-            .panel-heading
-              i.fa.fa-bell.fa-fw
-              |  Notifications Panel
-            // /.panel-heading
-            .panel-body
-              #addvideohere
-              <iframe width="350" height="200" src="https://www.youtube.com/embed/WdiSDIwPuM8" frameborder="0" allowfullscreen></iframe>
-            // /.panel-body
-          // /.panel
-        // /.col-lg-3
-        
-        .col-lg-3
-          .panel.panel-default
-            .panel-heading
-              i.fa.fa-bell.fa-fw
-              |  Notifications Panel
-            // /.panel-heading
-            .panel-body
-              #addvideohere
-            // /.panel-body
-          // /.panel
-        // /.col-lg-3
-        
-        .col-lg-3
-          .panel.panel-default
-            .panel-heading
-              i.fa.fa-bell.fa-fw
-              |  Notifications Panel
-            // /.panel-heading
-            .panel-body
-              #addvideohere
-            // /.panel-body
-          // /.panel
-        // /.col-lg-3
-        
-        .col-lg-3
-          .panel.panel-default
-            .panel-heading
-              i.fa.fa-bell.fa-fw
-              |  Notifications Panel
             // /.panel-heading
             .panel-body
               #addvideohere
