@@ -1,5 +1,90 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    #page-wrapper
+      .row
+        .col-lg-12
+          h1.page-header Dashboard
+        // /.col-lg-12
+      // /.row
+      
+      .row
+        .col-lg-3
+          .panel.panel-default
+            .panel-heading
+              i.fa.fa-bar-chart-o.fa-fw
+              |  Area Chart Example                     
+              .pull-right
+                .btn-group
+                  button.btn.btn-default.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
+                    | Actions
+                    span.caret                         
+                  ul.dropdown-menu.pull-right(role='menu')
+                    li
+                      a(href='#') Action                               
+                    li
+                      a(href='#') Another action                               
+                    li
+                      a(href='#') Something else here                            
+                    li.divider                         
+                    li
+                      a(href='#') Separated link
+            // /.panel-heading
+            .panel-body
+              #addvideohere
+            // /.panel-body
+          // /.panel
+        // /.col-lg-8
+
+        .col-lg-3
+          .panel.panel-default
+            .panel-heading
+              i.fa.fa-bell.fa-fw
+              |  Notifications Panel
+            // /.panel-heading
+            .panel-body
+              #addvideohere
+              <iframe width="350" height="200" src="https://www.youtube.com/embed/WdiSDIwPuM8" frameborder="0" allowfullscreen></iframe>
+            // /.panel-body
+          // /.panel
+        // /.col-lg-3
+        
+        .col-lg-3
+          .panel.panel-default
+            .panel-heading
+              i.fa.fa-bell.fa-fw
+              |  Notifications Panel
+            // /.panel-heading
+            .panel-body
+              #addvideohere
+            // /.panel-body
+          // /.panel
+        // /.col-lg-3
+        
+        .col-lg-3
+          .panel.panel-default
+            .panel-heading
+              i.fa.fa-bell.fa-fw
+              |  Notifications Panel
+            // /.panel-heading
+            .panel-body
+              #addvideohere
+            // /.panel-body
+          // /.panel
+        // /.col-lg-3
+        
+        .col-lg-3
+          .panel.panel-default
+            .panel-heading
+              i.fa.fa-bell.fa-fw
+              |  Notifications Panel
+            // /.panel-heading
+            .panel-body
+              #addvideohere
+            // /.panel-body
+          // /.panel
+        // /.col-lg-3
+        
+      // /.row
+    // /#page-wrapper
+  // /#wrapper
