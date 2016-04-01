@@ -1,17 +1,73 @@
+var tag = document.createElement('script');
+
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+var player;
+/*function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+            height: '0',
+            width: '0',
+            videoId: 'XgipcQ1xTug',
+            events: {
+             'onReady': onPlayerReady
+           }
+  });
+}*/
+
+function onPlayerReady(event) {
+  event.target.playVideo();
+}
+
 $(document).ready(function() {
+  //TEST OF YT PLAYER API
+  $('#playButton').on('click', function(e) {
+    player.playVideo();
+  });
+
+  $('#pauseButton').on('click', function(e) {
+    player.pauseVideo();
+  });
+
+  $('body').on('click','.video a', function(e) {
+    e.preventDefault();
+    var videoId = $(this).attr('href').split('=')[1];
+    console.log(videoId);
+
+    if (player !== undefined) {
+      player.loadVideoById(videoId);
+    } else {
+
+    player = new YT.Player('player', {
+              height: '0',
+              width: '0',
+              videoId: videoId,
+              events: {
+               'onReady': onPlayerReady
+             }
+    });
+  }
+  });
+
+
+
+
+
+
   //Initial loading of first channel to display something
   //TODO convert to what is in the hashtag in the url
-  loadVideos($('#channelList li a:first').text());
+  loadVideos($('#channelList li a:first').text(), function() {});
 
   $('#channelList li a').on('click', function(e) {
     var channelName = $(this).text();
 
-    loadVideos(channelName);
+    loadVideos(channelName, function() {});
   });
 
   //TESTESTESTESTESTESTEST
   $('#addChannelButton').on('click', function(e) {
-    var channelName = 'MrSuicideSheep';
+    var channelName = 'StephenWalking';
 
     loadVideos(channelName, function() {
           location.reload();
