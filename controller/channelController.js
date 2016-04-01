@@ -6,7 +6,7 @@ var ChannelController = {
     channel.save();
   },
   getChannel: function(channelName, cb) {
-    Channel.findOne({'name': channelName}).exec(function(err, res) {
+    Channel.findOne({'_id': channelName}).exec(function(err, res) {
       if (!err) {
         cb(res);
       } else {
@@ -15,9 +15,10 @@ var ChannelController = {
     });
   },
   exists: function(channelName, cb) {
-    Channel.count({'name': channelName}, function (err, count){
+    Channel.count({'_id': channelName}).exec(function (err, count) {
       //If count > 0 return true, else false
-      cb ((count > 0) ? true : false);
+      var found = (count > 0) ? true : false;
+      cb(found);
     });
   }
 };

@@ -11,17 +11,25 @@ var channelController = require('../controller/channelController');
 
 /* GET video listing for a channel. */
 router.get('/', function(req, res, next) {
-  if (req.query.name !== undefined) {
-    channelController.getChannel(req.query.name, function(channel) {
-      res.send(channel);
-    });
-    
-    getChannel(req.query.name, function(channel) {
-      //if channel exists in db and has no new vids, get it from there
-      // else load new and updated_at
-      // if not exists, create new
+  var channelName = req.query.name;
+  if (channelName !== undefined) {
 
-      channelController.addChannel(channel);
+    //TODO add check if channel has new videos in reality and udpate there
+    //If channel is already in db, get it from there
+    channelController.exists(channelName, function(exists) {
+      if(exists) {
+        channelController.getChannel(channelName, function(channel) {
+          res.send(channel);
+        });
+      } else {
+        getChannel(channelName, function(channel) {
+          //if channel exists in db and has no new vids, get it from there
+          // else load new and updated_at
+          // if not exists, create new
+          channelController.addChannel(channel);
+          res.send(channel);
+        });
+      }
     });
   } else {
     res.send();
