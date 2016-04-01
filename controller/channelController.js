@@ -13,6 +13,12 @@ var ChannelController = {
         cb(NULL);
       }
     });
+  },
+  exists: function(channelName, cb) {
+    Channel.count({'name': channelName}, function (err, count){
+      //If count > 0 return true, else false
+      cb ((count > 0) ? true : false);
+    });
   }
 };
 
