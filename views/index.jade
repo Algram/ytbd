@@ -14,6 +14,12 @@ block content
             span.icon-bar             
           a.navbar-brand(href='/') YTBD
         // /.navbar-header
+        
+        div.navbar-center  
+          div#playerProgress
+            input(type='range', min='0', value='0', max='100', step='1')
+
+        
         ul.nav.navbar-top-links.navbar-right
           li.dropdown
             a.dropdown-toggle(data-toggle='dropdown', href='#')

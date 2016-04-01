@@ -38,17 +38,29 @@ $(document).ready(function() {
     if (player !== undefined) {
       player.loadVideoById(videoId);
     } else {
+      player = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: videoId,
+                events: {
+                 'onReady': onPlayerReady
+               }
+      });
+    }
 
-    player = new YT.Player('player', {
-              height: '0',
-              width: '0',
-              videoId: videoId,
-              events: {
-               'onReady': onPlayerReady
-             }
-    });
-  }
+    startMonitoring();
   });
+
+  function startMonitoring() {
+    setInterval(function(){
+      var videoDuration = player.getDuration();
+      var videoCurrTime = player.getCurrentTime();
+
+      var progress = Math.floor((videoCurrTime/videoDuration)*100);
+
+      $('#playerProgress input').attr('value', progress);
+    }, 1000);
+  }
 
 
 
