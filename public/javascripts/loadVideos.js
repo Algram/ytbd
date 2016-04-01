@@ -9,7 +9,16 @@ $(document).ready(function() {
     loadVideos(channelName);
   });
 
-  function loadVideos(channelName) {
+  //TESTESTESTESTESTESTEST
+  $('#addChannelButton').on('click', function(e) {
+    var channelName = 'MrSuicideSheep';
+
+    loadVideos(channelName, function() {
+          location.reload();
+    });
+  });
+
+  function loadVideos(channelName, cb) {
     $('.videos').empty();
 
     $.get('/channel?name=' + channelName, function(channel) {
@@ -30,6 +39,8 @@ $(document).ready(function() {
           '</div>'
         );
       }
+
+      cb();
     });
   }
 });
