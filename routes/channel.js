@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-//Load all the things necessary for the api
+// Load all the things necessary for the api
 var google = require('googleapis');
 var youtube = google.youtube('v3');
 var api = require('../config/youtube_api');
 
-//Get ChannelController
+// Get ChannelController
 var channelController = require('../controller/channelController');
 
 /* GET video listing for a channel. */
@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
   var channelName = req.query.name;
   if (channelName !== undefined) {
 
-    //TODO add check if channel has new videos in reality and udpate there
+    //TODO add check if channel has new videos in reality and update there
     //If channel is already in db, get it from there
     channelController.exists(channelName, function(exists) {
       if(exists) {

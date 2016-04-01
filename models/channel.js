@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// create a schema
+// Create the channel schema
 var channelSchema = new Schema({
   _id: String,
   thumbnail: String,
@@ -9,10 +9,12 @@ var channelSchema = new Schema({
   videos: Array
 });
 
+// Virtual for aliasing name to _id for get
 channelSchema.virtual('name').get(function () {
   return this._id;
 });
 
+// Virtual for aliasing name to _id for set
 channelSchema.virtual('name').set(function (name) {
   this._id = name;
 });
