@@ -90,7 +90,7 @@ block content
                   i.fa.fa-bar-chart-o.fa-fw
                   |  Channels
                   span.fa.arrow                   
-                ul.nav.nav-second-level#channelList
+                ul#channelList.nav.nav-second-level
                   //Add channel names here
                   each name in channelNames
                     li
@@ -99,7 +99,10 @@ block content
               li
                 a(href='tables.html')
                   i.fa.fa-table.fa-fw
-                  |  Tables               
+                  |  Tables      
+          li#addChannelButton
+            a().btn.btn-success Add Channel
+         
           // /.sidebar-collapse
         // /.navbar-static-side
     
