@@ -90,11 +90,11 @@ block content
                   i.fa.fa-bar-chart-o.fa-fw
                   |  Channels
                   span.fa.arrow                   
-                ul.nav.nav-second-level
+                ul.nav.nav-second-level#channelList
                   //Add channel names here
-                  each val in channelNames
+                  each name in channelNames
                     li
-                      a(href='/') #{val}
+                      a(href='##{name}') #{name}
                     // /.nav-second-level               
               li
                 a(href='tables.html')
@@ -111,33 +111,6 @@ block content
       // /.row
       
       .row.videos
-        .col-lg-3
-          .panel.panel-default
-            .panel-heading
-              i.fa.fa-bar-chart-o.fa-fw
-              |  Area Chart Example                     
-              .pull-right
-                .btn-group
-                  button.btn.btn-default.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
-                    | Actions
-                    span.caret                         
-                  ul.dropdown-menu.pull-right(role='menu')
-                    li
-                      a(href='#') Action                               
-                    li
-                      a(href='#') Another action                               
-                    li
-                      a(href='#') Something else here                            
-                    li.divider                         
-                    li
-                      a(href='#') Separated link
-            // /.panel-heading
-            .panel-body
-              #addvideohere
-            // /.panel-body
-          // /.panel
-        // /.col-lg-3
-        
       // /.row
     // /#page-wrapper
   // /#wrapper

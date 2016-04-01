@@ -1,20 +1,35 @@
-$.get( "/channel?name=MrSuicideSheep", function(channel) {
-  console.log(channel);
+$(document).ready(function() {
+  //Initial loading of first channel to display something
+  //TODO convert to what is in the hashtag in the url
+  loadVideos($('#channelList li a:first').text());
 
-  for (var key in channel.videos) {
-    var video = channel.videos[key];
+  $('#channelList li a').on('click', function(e) {
+    var channelName = $(this).text();
 
-    $('.videos').append(
-      '<div class="col-lg-3 video">' +
-        '<div class="panel panel-default">' +
-          '<div class="panel-heading">' + video.title + '</div>' +
-          '<div class="panel-body">' +
-            '<a href="' + video.url + '">' +
-              '<img src="' + video.thumbnail + '" alt="Smiley face" height="200" width="350"> ' +
-            '</a>' +
-          '</div>' +
-        '</div>' +
-      '</div>'
-    );
+    loadVideos(channelName);
+  });
+
+  function loadVideos(channelName) {
+    $('.videos').empty();
+
+    $.get('/channel?name=' + channelName, function(channel) {
+
+      for (var key in channel.videos) {
+        var video = channel.videos[key];
+
+        $('.videos').append(
+          '<div class="col-lg-3 video">' +
+            '<div class="panel panel-default">' +
+              '<div class="panel-heading">' + video.title + '</div>' +
+              '<div class="panel-body">' +
+                '<a href="' + video.url + '">' +
+                  '<img src="' + video.thumbnail + '" alt="Smiley face" height="200" width="350"> ' +
+                '</a>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+    });
   }
 });
