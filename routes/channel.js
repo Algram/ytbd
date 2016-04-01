@@ -6,11 +6,22 @@ var google = require('googleapis');
 var youtube = google.youtube('v3');
 var api = require('../config/youtube_api');
 
+//Get ChannelController
+var channelController = require('../controller/channelController');
+
 /* GET video listing for a channel. */
 router.get('/', function(req, res, next) {
   if (req.query.name !== undefined) {
-    getChannel(req.query.name, function(channel) {
+    channelController.getChannel(req.query.name, function(channel) {
       res.send(channel);
+    });
+    
+    getChannel(req.query.name, function(channel) {
+      //if channel exists in db and has no new vids, get it from there
+      // else load new and updated_at
+      // if not exists, create new
+
+      channelController.addChannel(channel);
     });
   } else {
     res.send();
