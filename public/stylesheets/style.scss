@@ -35,8 +35,12 @@ a {
     margin: auto;
 }
 
-#playerProgress{
+#playerProgress {
   width: 350px;
   height: 20px;
   margin: 17px auto;
+}
+
+#playButton, #pauseButton {
+  cursor: pointer;
 }

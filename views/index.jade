@@ -12,12 +12,15 @@ block content
             span.icon-bar                  
             span.icon-bar                
             span.icon-bar             
-          a.navbar-brand(href='/') YTBD
         // /.navbar-header
         
         div.navbar-center  
-          div#playerProgress
-            input(type='range', min='0', value='0', max='100', step='1')
+          a#playButton.navbar-brand
+            i.fa.fa-play
+          a#pauseButton.navbar-brand
+            i.fa.fa-pause
+          div
+            input#playerProgress(type='range', min='0', value='0', max='100', step='1')
 
         
         ul.nav.navbar-top-links.navbar-right

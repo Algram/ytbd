@@ -32,4 +32,7 @@ a {
   height: 20px;
   margin: 17px auto; }
 
+#playButton, #pauseButton {
+  cursor: pointer; }
+
 /*# sourceMappingURL=style.css.map */

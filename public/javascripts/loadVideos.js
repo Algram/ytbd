@@ -1,27 +1,7 @@
-var tag = document.createElement('script');
-
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-var player;
-/*function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
-            height: '0',
-            width: '0',
-            videoId: 'XgipcQ1xTug',
-            events: {
-             'onReady': onPlayerReady
-           }
-  });
-}*/
-
-function onPlayerReady(event) {
-  event.target.playVideo();
-}
-
 $(document).ready(function() {
   //TEST OF YT PLAYER API
+  var player;
+
   $('#playButton').on('click', function(e) {
     player.playVideo();
   });
@@ -33,7 +13,6 @@ $(document).ready(function() {
   $('body').on('click','.video a', function(e) {
     e.preventDefault();
     var videoId = $(this).attr('href').split('=')[1];
-    console.log(videoId);
 
     if (player !== undefined) {
       player.loadVideoById(videoId);
@@ -48,22 +27,31 @@ $(document).ready(function() {
       });
     }
 
-    startMonitoring();
+    updateUI();
   });
 
-  function startMonitoring() {
+  function onPlayerReady(event) {
+    event.target.playVideo();
+  }
+
+  var seekbar = document.getElementById('playerProgress');
+  seekbar.onchange = seekVideo;
+
+  function seekVideo() {
+    console.log('seek');
+    var videoNewTime = Math.floor((seekbar.value/100) * player.getDuration());
+    player.seekTo(videoNewTime);
+  }
+
+  function updateUI() {
     setInterval(function(){
       var videoDuration = player.getDuration();
       var videoCurrTime = player.getCurrentTime();
 
-      var progress = Math.floor((videoCurrTime/videoDuration)*100);
-
-      $('#playerProgress input').attr('value', progress);
+      var progress = (videoCurrTime/videoDuration)*100;
+      seekbar.value = progress;
     }, 1000);
   }
-
-
-
 
 
 
