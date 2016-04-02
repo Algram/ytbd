@@ -103,7 +103,7 @@ block content
                   //Add channel names here
                   each name in channelNames
                     li
-                      a(href='##{name}') #{name}
+                      a #{name}
                     // /.nav-second-level               
               li
                 a(href='tables.html')
@@ -111,10 +111,6 @@ block content
                   |  Tables      
           li#addChannelButton
             a().btn.btn-success Add Channel
-          li#playButton
-            a().btn.btn-success Play
-          li#pauseButton
-            a().btn.btn-warning Pause
          
           // /.sidebar-collapse
         // /.navbar-static-side

@@ -1,4 +1,15 @@
 $(document).ready(function() {
+
+  $('input[type=range]').on('input', function(e){
+    var min = e.target.min,
+        max = e.target.max,
+        val = e.target.value;
+
+    $(e.target).css({
+      'backgroundSize': (val - min) * 100 / (max - min) + '% 100%'
+    });
+  }).trigger('input');
+
   //TEST OF YT PLAYER API
   var player;
 
@@ -38,7 +49,6 @@ $(document).ready(function() {
   seekbar.onchange = seekVideo;
 
   function seekVideo() {
-    console.log('seek');
     var videoNewTime = Math.floor((seekbar.value/100) * player.getDuration());
     player.seekTo(videoNewTime);
   }
@@ -50,6 +60,16 @@ $(document).ready(function() {
 
       var progress = (videoCurrTime/videoDuration)*100;
       seekbar.value = progress;
+
+      $('input[type=range]').on('input', function(e){
+        var min = e.target.min,
+            max = e.target.max,
+            val = e.target.value;
+
+        $(e.target).css({
+          'backgroundSize': (val - min) * 100 / (max - min) + '% 100%'
+        });
+      }).trigger('input');
     }, 1000);
   }
 
