@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    include ./addChannelModal.jade
     script(src="/javascripts/loadVideos.js")
     
     #wrapper
@@ -110,7 +111,7 @@ block content
                   i.fa.fa-table.fa-fw
                   |  Tables      
           li#addChannelButton
-            a().btn.btn-success Add Channel
+            button.btn.btn-primary(type="button", data-toggle="modal", data-target="#addChannelModal") Add Channel
          
           // /.sidebar-collapse
         // /.navbar-static-side

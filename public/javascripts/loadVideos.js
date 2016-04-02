@@ -86,8 +86,16 @@ $(document).ready(function() {
   });
 
   //TESTESTESTESTESTESTEST
-  $('#addChannelButton').on('click', function(e) {
+  /*$('#addChannelButton').on('click', function(e) {
     var channelName = 'StephenWalking';
+
+    loadVideos(channelName, function() {
+          location.reload();
+    });
+  });*/
+
+  $('#addChannelModal').on('click', '.confirm', function(e) {
+    var channelName = $('#addChannelModal input').val();
 
     loadVideos(channelName, function() {
           location.reload();
@@ -108,7 +116,7 @@ $(document).ready(function() {
               '<div class="panel-heading">' + video.title + '</div>' +
               '<div class="panel-body">' +
                 '<a href="' + video.url + '">' +
-                  '<img src="' + video.thumbnail + '" alt="Smiley face" height="200" width="350"> ' +
+                  '<img src="' + video.thumbnail + '" alt="Smiley face" height="200" width="350" class="img-responsive center-block"> ' +
                 '</a>' +
               '</div>' +
             '</div>' +

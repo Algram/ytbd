@@ -1,0 +1,15 @@
+.modal.fade#addChannelModal(tabindex="-1", role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal")
+          span &times;
+        h4.modal-title Add Channel
+      .modal-body
+        form
+          .form-group
+            label(for="channelName") Titel
+            input.form-control(type="text", placeholder="Name", name="channelName") 
+      .modal-footer
+        button.btn.btn-default(type="button" data-dismiss="modal") Schließen
+        button.btn.btn-primary.confirm(data-dismiss="modal") Add

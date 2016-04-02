@@ -13,7 +13,7 @@ a {
 #addChannelButton {
   padding: 5px; }
 
-#addChannelButton a {
+#addChannelButton button {
   display: block;
   width: 100%; }
 
