@@ -66,6 +66,9 @@ a {
 #playButton, #pauseButton, #channelList a {
   cursor: pointer; }
 
+#pauseButton {
+  display: none; }
+
 /* Input range / Progress bar styles */
 input[type=range] {
   margin: auto;

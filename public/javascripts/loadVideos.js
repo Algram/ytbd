@@ -14,12 +14,11 @@ $(document).ready(function() {
   var player;
 
   $('#playButton').on('click', function(e) {
-    player.playVideo();
-    $('#playButton').hide();
+    togglePlayer();
   });
 
   $('#pauseButton').on('click', function(e) {
-    player.pauseVideo();
+    togglePlayer();
   });
 
   $('body').on('click','.video a', function(e) {
@@ -28,6 +27,7 @@ $(document).ready(function() {
 
     if (player !== undefined) {
       player.loadVideoById(videoId);
+      togglePlayer();
     } else {
       player = new YT.Player('player', {
                 height: '0',
@@ -43,7 +43,8 @@ $(document).ready(function() {
   });
 
   function onPlayerReady(event) {
-    event.target.playVideo();
+    console.log('Asd');
+    togglePlayer();
   }
 
   var seekbar = document.getElementById('playerProgress');
@@ -86,15 +87,6 @@ $(document).ready(function() {
 
     loadVideos(channelName, function() {});
   });
-
-  //TESTESTESTESTESTESTEST
-  /*$('#addChannelButton').on('click', function(e) {
-    var channelName = 'StephenWalking';
-
-    loadVideos(channelName, function() {
-          location.reload();
-    });
-  });*/
 
   $('#addChannelModal').on('click', '.confirm', function(e) {
     var channelName = $('#addChannelModal input').val();
@@ -147,6 +139,28 @@ $(document).ready(function() {
 
       cb();
     });
+  }
+
+  function togglePlayer() {
+    if (player !== undefined) {
+      var state = player.getPlayerState();
+      switch(state) {
+        case 1:
+          player.pauseVideo();
+          $('#playButton').show();
+          $('#pauseButton').hide();
+          break;
+        case 2:
+          player.playVideo();
+          $('#playButton').hide();
+          $('#pauseButton').show();
+          break;
+        default:
+          player.playVideo();
+          $('#playButton').hide();
+          $('#pauseButton').show();
+      }
+    }
   }
 
   function clearPage() {
