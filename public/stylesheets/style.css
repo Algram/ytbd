@@ -10,6 +10,19 @@ a {
   overflow: hidden;
   white-space: nowrap; }
 
+.header {
+  padding-bottom: 20px; }
+
+.header img {
+  float: left;
+  width: 60px;
+  background: #555; }
+
+.header h1 {
+  position: relative;
+  top: 11px;
+  left: 10px; }
+
 #channelList a img {
   width: 30px;
   padding-right: 8px; }

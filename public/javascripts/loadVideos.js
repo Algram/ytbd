@@ -102,6 +102,9 @@ $(document).ready(function() {
     $('.videos').empty();
 
     $.get('/channel?name=' + channelName, function(channel) {
+      console.log(channel._id);
+      $('.header img').attr('src', channel.thumbnail);
+      $('.header h1').text(channel._id);
 
       for (var key in channel.videos) {
         var video = channel.videos[key];
@@ -112,7 +115,7 @@ $(document).ready(function() {
               '<div class="panel-heading">' + video.title + '</div>' +
               '<div class="panel-body">' +
                 '<a href="' + video.url + '">' +
-                  '<img src="' + video.thumbnail + '" alt="Smiley face" height="200" width="350" class="img-responsive center-block"> ' +
+                  '<img src="' + video.thumbnail + '" height="200" width="350" class="img-responsive center-block">' +
                 '</a>' +
               '</div>' +
             '</div>' +
