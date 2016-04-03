@@ -15,6 +15,7 @@ $(document).ready(function() {
 
   $('#playButton').on('click', function(e) {
     player.playVideo();
+    $('#playButton').hide();
   });
 
   $('#pauseButton').on('click', function(e) {
@@ -104,12 +105,28 @@ $(document).ready(function() {
     });
   });
 
+  $('#channelList').on('click', '.remove', function(e) {
+    console.log($(this).parent().text());
+    $.ajax({
+      method: 'POST',
+      url: '/channel/remove',
+      data: { name: $(this).parent().text()}
+    }).done(function() {
+      location.replace('#' + $('#channelList li a:first').text());
+      location.reload();
+    });
+  });
+
   function loadVideos(channelName, cb) {
     clearPage();
 
-    $.get('/channel?name=' + channelName, function(channel) {
-      $('.header img').attr('src', channel.thumbnail);
-      $('.header h1').text(channel._id);
+    $.ajax({
+      method: 'POST',
+      url: '/channel/add',
+      data: { name: channelName}
+    }).done(function(channel) {
+      $('.header img').attr('src', channel.thumbnail).show();
+      $('.header h1').text(channel._id).show();
 
       for (var key in channel.videos) {
         var video = channel.videos[key];
@@ -125,7 +142,7 @@ $(document).ready(function() {
               '</div>' +
             '</div>' +
           '</div>'
-        );
+        ).show();
       }
 
       cb();
@@ -134,8 +151,9 @@ $(document).ready(function() {
 
   function clearPage() {
     $('.videos').empty();
-    $('.header img').attr('src', null);
-    $('.header h1').text('');
+    $('.videos').hide();
+    $('.header img').attr('src', null).hide();
+    $('.header h1').text('').hide();
   }
 
 });

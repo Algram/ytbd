@@ -1,8 +1,23 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  overflow-y: scroll; }
+
+#channelList .remove {
+  display: none;
+  line-height: 21px;
+  color: #9c9c9c; }
+
+#channelList .remove:hover {
+  color: #555; }
+
+#channelList a:hover .remove {
+  display: block; }
 
 a {
   color: #00B7FF; }
+
+.videos {
+  display: none; }
 
 .panel-heading {
   word-wrap: break-word;

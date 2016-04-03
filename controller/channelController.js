@@ -5,6 +5,13 @@ var ChannelController = {
     var channel = new Channel(channelObj);
     channel.save();
   },
+  removeChannel: function(channelName, cb) {
+    Channel.findOne({'_id': channelName}).exec(function(err, ch) {
+      ch.remove(function () {
+        cb();
+      });
+    });
+  },
   getChannel: function(channelName, cb) {
     Channel.findOne({'_id': channelName}).exec(function(err, res) {
       if (!err) {

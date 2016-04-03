@@ -9,9 +9,18 @@ var api = require('../config/youtube_api');
 // Get ChannelController
 var channelController = require('../controller/channelController');
 
+router.post('/remove', function(req, res) {
+  var channelName = req.body.name;
+
+  channelController.removeChannel(channelName, function() {
+    res.redirect('/');
+  });
+});
+
+
 /* GET video listing for a channel. */
-router.get('/', function(req, res, next) {
-  var channelName = req.query.name;
+router.post('/add', function(req, res, next) {
+  var channelName = req.body.name;
   if (channelName !== undefined) {
 
     //TODO add check if channel has new videos in reality and update there

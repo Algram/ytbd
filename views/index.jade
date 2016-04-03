@@ -94,25 +94,16 @@ block content
         // /.navbar-top-links
         .navbar-default.sidebar(role='navigation')
           .sidebar-nav.navbar-collapse
-            ul#side-menu.nav              
-              li.active
-                a(href='#')
-                  i.fa.fa-bar-chart-o.fa-fw
-                  |  Channels
-                  span.fa.arrow                   
-                ul#channelList.nav.nav-second-level
-                  //Add channel names here
-                  each channel in channelInfo
-                    li
-                      a(href="##{channel.name}") #{channel.name}
-                        img(src="#{channel.thumbnail}").img-responsive.pull-left
-                    // /.nav-second-level               
-              li
-                a(href='tables.html')
-                  i.fa.fa-table.fa-fw
-                  |  Tables      
-          li#addChannelButton
-            button.btn.btn-primary(type="button", data-toggle="modal", data-target="#addChannelModal") Add Channel
+            ul#channelList.nav              
+              //Add channel names here
+              each channel in channelInfo
+                li
+                  a(href="##{channel.name}") #{channel.name}
+                    img(src="#{channel.thumbnail}").img-responsive.pull-left
+                    i.remove.fa.fa-times.pull-right
+                      
+              li#addChannelButton
+                button.btn.btn-primary(type="button", data-toggle="modal", data-target="#addChannelModal") Add Channel
          
           // /.sidebar-collapse
         // /.navbar-static-side
