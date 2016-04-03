@@ -102,9 +102,10 @@ block content
                   span.fa.arrow                   
                 ul#channelList.nav.nav-second-level
                   //Add channel names here
-                  each name in channelNames
+                  each channel in channelInfo
                     li
-                      a #{name}
+                      a #{channel.name}
+                        img(src="#{channel.thumbnail}").img-responsive.pull-left
                     // /.nav-second-level               
               li
                 a(href='tables.html')

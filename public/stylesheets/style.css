@@ -10,6 +10,10 @@ a {
   overflow: hidden;
   white-space: nowrap; }
 
+#channelList a img {
+  width: 30px;
+  padding-right: 8px; }
+
 #addChannelButton {
   padding: 5px; }
 

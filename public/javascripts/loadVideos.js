@@ -55,11 +55,7 @@ $(document).ready(function() {
 
   function updateUI() {
     setInterval(function(){
-      var videoDuration = player.getDuration();
-      var videoCurrTime = player.getCurrentTime();
-
-      var progress = (videoCurrTime/videoDuration)*100;
-      seekbar.value = progress;
+      seekbar.value = (player.getCurrentTime()/player.getDuration())*100;
 
       $('input[type=range]').on('input', function(e){
         var min = e.target.min,

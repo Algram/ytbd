@@ -21,15 +21,19 @@ var ChannelController = {
       cb(found);
     });
   },
-  getAllChannelNames: function(cb) {
-    Channel.find({},{'thumbnail': 0, 'avgVideoViews': 0, 'videos': 0, '__v': 0 }).exec(function(err, res) {
-      var channelNames = [];
+  getChannelInfo: function(cb) {
+    Channel.find({},{'videos': 0, '__v': 0 }).exec(function(err, res) {
+      var channelInfo = [];
       for (var i = 0; i < res.length; i++) {
         var channel = res[i];
-        channelNames.push(channel._id);
+        channelInfo.push({
+          name: channel.name,
+          thumbnail: channel.thumbnail,
+          avgVideoViews: channel.avgVideoViews
+        });
       }
 
-      cb(channelNames);
+      cb(channelInfo);
     });
   }
 };
