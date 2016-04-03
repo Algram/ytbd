@@ -43,7 +43,6 @@ $(document).ready(function() {
   });
 
   function onPlayerReady(event) {
-    console.log('Asd');
     togglePlayer();
   }
 
@@ -55,20 +54,18 @@ $(document).ready(function() {
     player.seekTo(videoNewTime);
   }
 
+  var updating = false;
   function updateUI() {
-    setInterval(function(){
-      seekbar.value = (player.getCurrentTime()/player.getDuration())*100;
+    if (!updating) {
+      updating = true;
+      setInterval(function(){
+        seekbar.value = (player.getCurrentTime()/player.getDuration())*100;
 
-      $('input[type=range]').on('input', function(e){
-        var min = e.target.min,
-            max = e.target.max,
-            val = e.target.value;
-
-        $(e.target).css({
-          'backgroundSize': (val - min) * 100 / (max - min) + '% 100%'
+        $('input[type=range]').css({
+          'background-size': (player.getCurrentTime()/player.getDuration())*100 + '% 100%'
         });
-      }).trigger('input');
-    }, 1000);
+      }, 1000);
+    }
   }
 
 
