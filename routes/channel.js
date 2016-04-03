@@ -13,10 +13,9 @@ router.post('/remove', function(req, res) {
   var channelName = req.body.name;
 
   channelController.removeChannel(channelName, function() {
-    res.redirect('/');
+    res.send();
   });
 });
-
 
 /* GET video listing for a channel. */
 router.post('/add', function(req, res, next) {
