@@ -104,7 +104,7 @@ block content
                   //Add channel names here
                   each channel in channelInfo
                     li
-                      a #{channel.name}
+                      a(href="##{channel.name}") #{channel.name}
                         img(src="#{channel.thumbnail}").img-responsive.pull-left
                     // /.nav-second-level               
               li

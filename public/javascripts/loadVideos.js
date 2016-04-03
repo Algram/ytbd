@@ -73,7 +73,12 @@ $(document).ready(function() {
 
   //Initial loading of first channel to display something
   //TODO convert to what is in the hashtag in the url
-  loadVideos($('#channelList li a:first').text(), function() {});
+
+  if ($(location).attr('hash').slice(1)) {
+    loadVideos($(location).attr('hash').slice(1), function() {});
+  } else {
+    loadVideos($('#channelList li a:first').text(), function() {});
+  }
 
   $('#channelList li a').on('click', function(e) {
     var channelName = $(this).text();
@@ -94,15 +99,15 @@ $(document).ready(function() {
     var channelName = $('#addChannelModal input').val();
 
     loadVideos(channelName, function() {
-          location.reload();
+        location.replace('#' + channelName);
+        location.reload();
     });
   });
 
   function loadVideos(channelName, cb) {
-    $('.videos').empty();
+    clearPage();
 
     $.get('/channel?name=' + channelName, function(channel) {
-      console.log(channel._id);
       $('.header img').attr('src', channel.thumbnail);
       $('.header h1').text(channel._id);
 
@@ -126,4 +131,11 @@ $(document).ready(function() {
       cb();
     });
   }
+
+  function clearPage() {
+    $('.videos').empty();
+    $('.header img').attr('src', null);
+    $('.header h1').text('');
+  }
+
 });
