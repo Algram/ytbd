@@ -7,7 +7,6 @@ var channelController = require('../controller/channelController');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   channelController.getChannelInfo(function(channelInfo) {
-    console.log(channelInfo);
     res.render('index', {channelInfo: channelInfo});
   });
 });

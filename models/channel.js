@@ -7,7 +7,7 @@ var channelSchema = new Schema({
   thumbnail: String,
   avgVideoViews: Number,
   videos: Array
-});
+}, { timestamps: true});
 
 // Virtual for aliasing name to _id for get
 channelSchema.virtual('name').get(function () {

@@ -1,6 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
+// Load moment.js for date comparison
+var moment = require('moment');
+
+// Load update config
+var update = require('../config/update');
+
 // Load all the things necessary for the api
 var google = require('googleapis');
 var youtube = google.youtube('v3');
@@ -28,6 +34,8 @@ router.post('/add', function(req, res, next) {
       if(exists) {
         channelController.getChannel(channelName, function(channel) {
           res.send(channel);
+
+          checkForUpdate(channel);
         });
       } else {
         getChannel(channelName, function(channel) {
@@ -43,6 +51,15 @@ router.post('/add', function(req, res, next) {
     res.send();
   }
 });
+
+function checkForUpdate(channel) {
+  if ((moment().diff(channel.updatedAt, 'days')) > update.interval) {
+    youtube.channels.list({ auth: api.key, part: 'statistics', forUsername: channel.name}, function(err, data) {
+      var videoCount = data.items[0].statistics.videoCount;
+      console.log(videoCount);
+    });
+  }
+}
 
 
 //TODO add error handling (channel has no videos)
