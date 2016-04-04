@@ -39,9 +39,6 @@ router.post('/add', function(req, res, next) {
         });
       } else {
         getChannel(channelName, function(channel) {
-          //if channel exists in db and has no new vids, get it from there
-          // else load new and updated_at
-          // if not exists, create new
           channelController.addChannel(channel);
           res.send(channel);
         });
@@ -53,14 +50,12 @@ router.post('/add', function(req, res, next) {
 });
 
 function checkForUpdate(channel) {
-  if ((moment().diff(channel.updatedAt, 'days')) > update.interval) {
-    youtube.channels.list({ auth: api.key, part: 'statistics', forUsername: channel.name}, function(err, data) {
-      var videoCount = data.items[0].statistics.videoCount;
-      console.log(videoCount);
+  if ((moment().diff(channel.updatedAt, 'days')) >= update.interval) {
+    getChannel(channel.name, function(updatedChannel) {
+      channelController.updateChannel(updatedChannel);
     });
   }
 }
-
 
 //TODO add error handling (channel has no videos)
 function getChannel(channelName, cb) {

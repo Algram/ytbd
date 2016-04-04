@@ -21,6 +21,14 @@ var ChannelController = {
       }
     });
   },
+  updateChannel: function(channelObj) {
+    Channel.findOneAndUpdate(
+      {'_id': channelObj.name},
+      channelObj,
+      function(err, doc){
+        if (err) return console.log(err);
+      });
+  },
   exists: function(channelName, cb) {
     Channel.count({'_id': channelName}).exec(function(err, count) {
       //If count > 0 return true, else false
