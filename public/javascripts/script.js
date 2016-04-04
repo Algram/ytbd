@@ -80,6 +80,8 @@ $(document).ready(function() {
   }
 
   $('#channelList li a').on('click', function(e) {
+    $('#channelList li a').removeClass('active');
+    $(this).addClass('active');
     var channelName = $(this).text();
 
     loadVideos(channelName, function() {});

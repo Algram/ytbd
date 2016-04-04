@@ -17,8 +17,9 @@ body {
  display: block;
 }
 
-a {
+a, a:active, a:focus {
   color: #00B7FF;
+  outline: 0 !important;
 }
 
 .videos {

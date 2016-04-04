@@ -97,7 +97,7 @@ function fetchChannelFromApi(channelName, cb) {
   youtube.channels.list({ auth: api.key, part: 'contentDetails, snippet', forUsername: channelName}, function(err, data) {
 
     // Return if channel doesn't exist or does not have videos
-    if (data.item === undefined) {
+    if (data.items.length === 0) {
       return;
     }
 

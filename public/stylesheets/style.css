@@ -13,8 +13,9 @@ body {
 #channelList a:hover .remove {
   display: block; }
 
-a {
-  color: #00B7FF; }
+a, a:active, a:focus {
+  color: #00B7FF;
+  outline: 0 !important; }
 
 .videos {
   display: none; }
