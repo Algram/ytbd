@@ -12,8 +12,40 @@ var google = require('googleapis');
 var youtube = google.youtube('v3');
 var api = require('../config/youtube_api');
 
-// Get ChannelController
+// Load ChannelController
 var channelController = require('../controller/channelController');
+
+
+////////////
+// Routes //
+////////////
+
+router.post('/add', function(req, res, next) {
+  var channelName = req.body.name;
+
+  if (channelName !== undefined) {
+    channelController.exists(channelName, function(exists) {
+
+      // If channel exists, load it from database
+      if(exists) {
+        channelController.getChannel(channelName, function(channel) {
+          // Check if channel needs an update
+          checkForUpdate(channel);
+
+          res.send(channel);
+        });
+      } else {
+        fetchChannelFromApi(channelName, function(channel) {
+          channelController.addChannel(channel);
+          res.send(channel);
+        });
+      }
+    });
+
+  } else {
+    res.send();
+  }
+});
 
 router.post('/remove', function(req, res) {
   var channelName = req.body.name;
@@ -23,45 +55,37 @@ router.post('/remove', function(req, res) {
   });
 });
 
-/* GET video listing for a channel. */
-router.post('/add', function(req, res, next) {
-  var channelName = req.body.name;
-  if (channelName !== undefined) {
 
-    //TODO add check if channel has new videos in reality and update there
-    //If channel is already in db, get it from there
-    channelController.exists(channelName, function(exists) {
-      if(exists) {
-        channelController.getChannel(channelName, function(channel) {
-          res.send(channel);
+///////////////
+// Functions //
+///////////////
 
-          checkForUpdate(channel);
-        });
-      } else {
-        getChannel(channelName, function(channel) {
-          channelController.addChannel(channel);
-          res.send(channel);
-        });
-      }
-    });
-  } else {
-    res.send();
-  }
-});
-
+/**
+ * Checks if an update is needed and starts it
+ * @param  {obj} channel  Channel object
+ * @return {void}
+ */
 function checkForUpdate(channel) {
+  // If last channel update was more than 2 days ago
   if ((moment().diff(channel.updatedAt, 'days')) >= update.interval) {
-    getChannel(channel.name, function(updatedChannel) {
+    fetchChannelFromApi(channel.name, function(updatedChannel) {
       channelController.updateChannel(updatedChannel);
     });
   }
 }
 
-//TODO add error handling (channel has no videos)
-function getChannel(channelName, cb) {
+/**
+ * Takes a string as an id for a channelName and fetches data for that channel
+ * from the youtube-api. Creates a channel object and returns it as a callback
+ * parameter.
+ * @param  {string}   channelName Name of Channel as id
+ * @param  {Function} cb          Has channel object
+ * @return {void}
+ */
+function fetchChannelFromApi(channelName, cb) {
   var cumVideoViews = 0;
-  var numOfVideos = 50;
 
+  // Dummy object
   var channel = {
     name: channelName,
     thumbnail: '',
@@ -69,22 +93,28 @@ function getChannel(channelName, cb) {
     videos: []
   };
 
-  //Get channel with channelName
+  // Get channel with channelName
   youtube.channels.list({ auth: api.key, part: 'contentDetails, snippet', forUsername: channelName}, function(err, data) {
+
+    // Return if channel doesn't exist or does not have videos
+    if (data.item === undefined) {
+      return;
+    }
+
     var uploadPlaylistId = data.items[0].contentDetails.relatedPlaylists.uploads;
 
-    //Set channel thumbnail
+    // Set channel thumbnail
     channel.thumbnail =  data.items[0].snippet.thumbnails.medium.url;
 
-    //Get upload playlist
-    youtube.playlistItems.list({ auth: api.key, part: 'contentDetails', playlistId: uploadPlaylistId, maxResults: numOfVideos}, function(err, data) {
+    // Get upload playlist
+    youtube.playlistItems.list({ auth: api.key, part: 'contentDetails', playlistId: uploadPlaylistId, maxResults: api.numOfVideos}, function(err, data) {
       var playlistItems = data.items;
       var videoCount = 0;
 
       for (var key in playlistItems) {
         var videoId = playlistItems[key].contentDetails.videoId;
 
-        //Get videos from uploads
+        // Get videos from uploads
         youtube.videos.list({ auth: api.key, part: 'statistics, snippet', id: videoId}, function(err, data) {
           var title = data.items[0].snippet.title;
           var description = data.items[0].snippet.description;
@@ -93,6 +123,7 @@ function getChannel(channelName, cb) {
           var url = 'https://www.youtube.com/watch?v=' + data.items[0].id;
           cumVideoViews += parseInt(viewCount);
 
+          // Fill videos array in channel object
           channel.videos.push({
             title: title,
             description: description,
@@ -101,15 +132,14 @@ function getChannel(channelName, cb) {
             viewCount: viewCount
           });
 
-
           videoCount++;
 
-          //Check if all requests are finished and call cb
+          // Check if all requests are finished and call cb
           if (videoCount === 50) {
-            //Add average number of views a video on this channel has
-            channel.avgVideoViews = Math.floor(cumVideoViews/numOfVideos);
+            // Add average number of views a video on this channel has
+            channel.avgVideoViews = Math.floor(cumVideoViews/api.numOfVideos);
 
-            //Remove videos that are below average
+            // Remove videos that are below average
             channel.videos = cullVideos(channel.videos, channel.avgVideoViews);
 
             cb(channel);
@@ -120,6 +150,13 @@ function getChannel(channelName, cb) {
   });
 }
 
+/**
+ * Removes videos from array that are below the average view number for the
+ * channel they were uploaded to.
+ * @param  {array} arr            Array of videos
+ * @param  {number} avgVideoViews Average views for that channel
+ * @return {arr}                  Array of videos above average
+ */
 function cullVideos(arr, avgVideoViews) {
   var culledVideos = [];
   for (var key in arr) {
