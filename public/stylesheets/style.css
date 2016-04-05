@@ -2,6 +2,9 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   overflow-y: scroll; }
 
+.auth-container {
+  margin-top: 100px; }
+
 #channelList .remove {
   display: none;
   line-height: 21px;
