@@ -96,6 +96,12 @@ $(document).ready(function() {
     });
   });
 
+  $('#addChannelModal input').keypress(function (e) {
+  if (e.which == 13) {
+    return false;    //<---- Add this line
+  }
+});
+
   $('#channelList').on('click', '.remove', function(e) {
     console.log($(this).parent().text());
     $.ajax({
