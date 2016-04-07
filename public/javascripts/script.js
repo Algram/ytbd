@@ -113,6 +113,22 @@ $(document).ready(function() {
     });
   });
 
+  // Search
+
+  $('#searchGroup span').on('click', 'button',function(e) {
+    searchChannel($(this).parent().siblings('input').val());
+  });
+
+  function searchChannel(searchVal) {
+    $.ajax({
+      method: 'POST',
+      url: '/channel/search',
+      data: { searchVal: searchVal}
+    }).done(function(data) {
+      console.log(data);
+    });
+  }
+
   function loadVideos(channelName, cb) {
     clearPage();
     var loadingTimer = setTimeout(function() {

@@ -78,12 +78,24 @@ router.post('/search', function(req, res, next) {
 ///////////////
 
 function searchForChannel(searchVal, cb) {
-  youtube.search.list({ auth: api.key, part: 'snippet', q: channelName, type: 'channel'}, function(err, data) {
+  youtube.search.list({ auth: api.key, part: 'snippet', q: searchVal, type: 'channel'}, function(err, data) {
     if (data.items.length === 0) {
       cb(null);
       return;
     } else {
-      cb(data.items);
+      var channels = [];
+      for (var i = 0; i < data.items.length; i++) {
+        var channelData = data.items[i].snippet;
+        var channel = {
+          id: channelData.channelId,
+          name: channelData.channelTitle,
+          thumbnail: channelData.thumbnails.medium.url
+        };
+
+        channels.push(channel);
+      }
+
+      cb(channels);
     }
   });
 
