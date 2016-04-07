@@ -1,20 +1,17 @@
-// grab the things we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
 var passportLocalMongoose = require('passport-local-mongoose');
 
-// create a schema
+// Create the user schema
 var userSchema = mongoose.Schema({
     username: String,
     password: String
 });
 
+// Add passport-auth plugin to user schema
 userSchema.plugin(passportLocalMongoose);
 
-// the schema is useless so far
-// we need to create a model using it
+// Create the model with the user schema
 var User = mongoose.model('User', userSchema);
 
-// make this available to our users in our Node applications
 module.exports = User;

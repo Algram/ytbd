@@ -1,5 +1,8 @@
 $(document).ready(function() {
-  //Initials
+  ///////////////////
+  // Initial setup //
+  ///////////////////
+
   $('#channelList li a').removeClass('active');
   $('#channelList li a:first').addClass('active');
   var seekbar = document.getElementById('playerProgress');
@@ -9,6 +12,19 @@ $(document).ready(function() {
     'background-size': '0% 100%'
   });
 
+  // Initial loading of first channel to display something
+  if ($(location).attr('hash').slice(1)) {
+    loadVideos($(location).attr('hash').slice(1), function() {});
+  } else {
+    loadVideos($('#channelList li a:first').data('id'), function() {});
+  }
+
+
+  /////////////////////
+  // Event Listeners //
+  /////////////////////
+
+  /* PROGRESS BAR */
   $('input[type=range]').on('input', function(e){
     var min = e.target.min,
         max = e.target.max,
@@ -19,7 +35,52 @@ $(document).ready(function() {
     });
   }).trigger('input');
 
-  //TEST OF YT PLAYER API
+  /* CHANNEL ACTIONS */
+  $('#channelList li a').on('click', function(e) {
+    $('#channelList li a').removeClass('active');
+    $(this).addClass('active');
+    var channelId = $(this).data('id');
+    location.replace('#' + channelId);
+
+    loadVideos(channelId, function() {});
+  });
+
+  $('#channelList').on('click', '.remove', function(e) {
+    $.ajax({
+      method: 'POST',
+      url: '/channel/remove',
+      data: { id: $(this).parent().data('id')}
+    }).done(function() {
+      location.replace('#' + $('#channelList li a:first').data('id'));
+      location.reload();
+    });
+  });
+
+  /* SEARCH */
+  $('#searchGroup span').on('click', 'button',function(e) {
+    $('#addChannelModal .results').empty();
+    searchChannel($(this).parent().siblings('input').val());
+  });
+
+  $('#addChannelModal .results').on('click', 'img',function(e) {
+    $(this).siblings().removeClass('selected');
+    $(this).addClass('selected');
+  });
+
+  $('#addChannelModal').on('click', '.confirm', function(e) {
+    var channelId = $('#addChannelModal img.selected').data('id');
+
+    loadVideos(channelId, function() {
+        location.replace('#' + channelId);
+        location.reload();
+    });
+  });
+
+
+  ////////////////////////
+  // Youtube-Player-API //
+  ////////////////////////
+
   var player;
 
   $('#playButton').on('click', function(e) {
@@ -43,7 +104,7 @@ $(document).ready(function() {
                 width: '0',
                 videoId: videoId,
                 events: {
-                 'onReady': onPlayerReady
+                 'onReady': togglePlayer
                }
       });
     }
@@ -51,86 +112,10 @@ $(document).ready(function() {
     updateUI();
   });
 
-  function onPlayerReady(event) {
-    togglePlayer();
-  }
 
-  function seekVideo() {
-    var videoNewTime = Math.floor((seekbar.value/100) * player.getDuration());
-    player.seekTo(videoNewTime);
-  }
-
-  var updating = false;
-  function updateUI() {
-    if (!updating) {
-      updating = true;
-      setInterval(function(){
-        seekbar.value = (player.getCurrentTime()/player.getDuration())*100;
-
-        $('input[type=range]').css({
-          'background-size': (player.getCurrentTime()/player.getDuration())*100 + '% 100%'
-        });
-      }, 1000);
-    }
-  }
-
-
-
-  //Initial loading of first channel to display something
-  //TODO convert to what is in the hashtag in the url
-
-  if ($(location).attr('hash').slice(1)) {
-    loadVideos($(location).attr('hash').slice(1), function() {});
-  } else {
-    loadVideos($('#channelList li a:first').data('id'), function() {});
-  }
-
-  $('#channelList li a').on('click', function(e) {
-    $('#channelList li a').removeClass('active');
-    $(this).addClass('active');
-    var channelId = $(this).data('id');
-    location.replace('#' + channelId);
-
-    loadVideos(channelId, function() {});
-  });
-
-  $('#addChannelModal').on('click', '.confirm', function(e) {
-    var channelId = $('#addChannelModal img.selected').data('id');
-
-    loadVideos(channelId, function() {
-        location.replace('#' + channelId);
-        location.reload();
-    });
-  });
-
-  $('#addChannelModal input').keypress(function (e) {
-  if (e.which == 13) {
-    return false;
-  }
-});
-
-  $('#channelList').on('click', '.remove', function(e) {
-    $.ajax({
-      method: 'POST',
-      url: '/channel/remove',
-      data: { id: $(this).parent().data('id')}
-    }).done(function() {
-      location.replace('#' + $('#channelList li a:first').data('id'));
-      location.reload();
-    });
-  });
-
-  // Search
-
-  $('#searchGroup span').on('click', 'button',function(e) {
-    $('#addChannelModal .results').empty();
-    searchChannel($(this).parent().siblings('input').val());
-  });
-
-  $('#addChannelModal .results').on('click', 'img',function(e) {
-    $(this).siblings().removeClass('selected');
-    $(this).addClass('selected');
-  });
+  ///////////////
+  // Functions //
+  ///////////////
 
   function searchChannel(searchVal) {
     $.ajax({
@@ -219,4 +204,23 @@ $(document).ready(function() {
     $('.header h1').text('').hide();
   }
 
+  /* YOUTUBE-PLAYER-CONTROLS */
+  function seekVideo() {
+    var videoNewTime = Math.floor((seekbar.value/100) * player.getDuration());
+    player.seekTo(videoNewTime);
+  }
+
+  var updating = false;
+  function updateUI() {
+    if (!updating) {
+      updating = true;
+      setInterval(function(){
+        seekbar.value = (player.getCurrentTime()/player.getDuration())*100;
+
+        $('input[type=range]').css({
+          'background-size': (player.getCurrentTime()/player.getDuration())*100 + '% 100%'
+        });
+      }, 1000);
+    }
+  }
 });

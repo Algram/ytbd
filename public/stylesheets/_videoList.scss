@@ -1,0 +1,22 @@
+.panel-heading {
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.header {
+  padding-bottom: 20px;
+
+  img {
+    float: left;
+    width: 60px;
+    background: #555;
+  }
+
+  h1 {
+    position: relative;
+    top: 11px;
+    left: 10px;
+  }
+}

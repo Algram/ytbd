@@ -1,0 +1,29 @@
+#channelList {
+  .remove {
+    display: none;
+    line-height: 21px;
+    color: #9c9c9c;
+  }
+
+  .remove:hover {
+    color: #555;
+  }
+
+  a:hover .remove {
+    display: block;
+  }
+
+  a img{
+    width: 30px;
+    padding-right: 8px;
+  }
+}
+
+#addChannelButton {
+  padding: 5px;
+
+  button {
+    display: block;
+    width: 100%;
+  }
+}

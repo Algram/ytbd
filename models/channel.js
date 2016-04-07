@@ -10,6 +10,7 @@ var channelSchema = new Schema({
   videos: Array
 }, { timestamps: true});
 
+// Create the model with the channel schema
 var Channel = mongoose.model('Channel', channelSchema);
 
 module.exports = Channel;

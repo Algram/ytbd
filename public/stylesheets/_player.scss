@@ -1,0 +1,68 @@
+#player, #pauseButton {
+  display: none;
+}
+
+#playerProgress {
+  width: 350px;
+  margin: 22px auto;
+}
+
+#playButton, #pauseButton, #channelList a {
+  cursor: pointer;
+}
+
+/* Input range / Progress bar styles */
+input[type=range] {
+  margin: auto;
+  outline: none;
+  padding: 0;
+  width: 0%;
+  height: 6px;
+  background-color: #C3DBB4;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #68B3AF), color-stop(100%, #68B3AF));
+  background-image: -webkit-linear-gradient(#68B3AF, #68B3AF);
+  background-image: -moz-linear-gradient(#68B3AF, #68B3AF);
+  background-image: -o-linear-gradient(#68B3AF, #68B3AF);
+  background-image: linear-gradient(#68B3AF, #68B3AF);
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  box-shadow: none;
+  border: none;
+  background: transparent;
+  -webkit-appearance: none;
+}
+
+input[type=range]::-moz-range-track {
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  background: #fff;
+  border-radius: 100%;
+  box-shadow: 0 0 1px 0px rgba(0,0,0,0.1);
+  -webkit-appearance: none;
+}
+
+input[type=range]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  background: #fff;
+  border-radius: 100%;
+  box-shadow: 0 0 1px 0px rgba(0,0,0,0.1);
+}

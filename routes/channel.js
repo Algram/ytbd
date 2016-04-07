@@ -77,6 +77,13 @@ router.post('/search', function(req, res, next) {
 // Functions //
 ///////////////
 
+/**
+ * Searches for channels and returns a custom channel object for displaying
+ * in the search-results-page
+ * @param  {string}   searchVal The channel name that is searched for
+ * @param  {Function} cb        Has channel object
+ * @return {void}
+ */
 function searchForChannel(searchVal, cb) {
   youtube.search.list({ auth: api.key, part: 'snippet', q: searchVal, type: 'channel'}, function(err, data) {
     if (data.items.length === 0) {

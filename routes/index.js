@@ -1,13 +1,16 @@
 var express = require('express');
 var router = express.Router();
-
 var passport = require('passport');
 var User = require('../models/user');
 
 // Get ChannelController
 var channelController = require('../controller/channelController');
 
-/* GET home page. */
+
+////////////
+// Routes //
+////////////
+
 router.get('/', function(req, res, next) {
   if(!req.user) {
     res.redirect('/login');
@@ -21,7 +24,6 @@ router.get('/', function(req, res, next) {
   }
 });
 
-//passport
 router.get('/register', function(req, res) {
     res.render('register', { });
 });
