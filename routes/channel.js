@@ -162,6 +162,12 @@ function fetchChannelFromApi(channelId, cb) {
     // Get upload playlist
     youtube.playlistItems.list({ auth: api.key, part: 'contentDetails', playlistId: uploadPlaylistId, maxResults: api.numOfVideos}, function(err, data) {
       var playlistItems = data.items;
+
+      if (playlistItems.length === 0) {
+        cb(null, 'Channel does not have any videos');
+        return;
+      }
+
       var videoCount = 0;
 
       for (var key in playlistItems) {
@@ -189,6 +195,7 @@ function fetchChannelFromApi(channelId, cb) {
 
           // Check if all requests are finished and call cb
           if (videoCount === 50 || videoCount == totalVideosCount) {
+            
             // Add average number of views a video on this channel has
             channel.avgVideoViews = Math.floor(cumVideoViews/api.numOfVideos);
 
