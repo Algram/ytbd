@@ -32,11 +32,7 @@ block content
               li
                 a()
                   i.fa.fa-user.fa-fw
-                  |  #{user.username}                  
-              li
-                a()
-                  i.fa.fa-gear.fa-fw
-                  |  Settings                   
+                  |  #{user.username}                                    
               li.divider                  
               li
                 a(href='/logout')
@@ -51,7 +47,7 @@ block content
               //Add channel names here
               each channel in channelInfo
                 li
-                  a(href="##{channel.name}") #{channel.name}
+                  a(data-id="#{channel._id}") #{channel.name}
                     img(src="#{channel.thumbnail}").img-responsive.pull-left
                     i.remove.fa.fa-times.pull-right
                       

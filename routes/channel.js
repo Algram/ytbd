@@ -21,21 +21,21 @@ var channelController = require('../controller/channelController');
 ////////////
 
 router.post('/add', function(req, res, next) {
-  var channelName = req.body.name;
+  var channelId = req.body.id;
 
-  if (channelName !== undefined) {
-    channelController.exists(channelName, function(exists) {
+  if (channelId !== undefined) {
+    channelController.exists(channelId, function(exists) {
 
       // If channel exists, load it from database
       if(exists) {
-        channelController.getChannel(channelName, function(channel) {
+        channelController.getChannel(channelId, function(channel) {
           // Check if channel needs an update
           checkForUpdate(channel);
 
           res.send(channel);
         });
       } else {
-        fetchChannelFromApi(channelName, function(channel, err) {
+        fetchChannelFromApi(channelId, function(channel, err) {
           if (!err) {
             channelController.addChannel(channel);
             res.send(channel);
@@ -52,9 +52,9 @@ router.post('/add', function(req, res, next) {
 });
 
 router.post('/remove', function(req, res) {
-  var channelName = req.body.name;
+  var channelId = req.body.id;
 
-  channelController.removeChannel(channelName, function() {
+  channelController.removeChannel(channelId, function() {
     res.send();
   });
 });
@@ -98,15 +98,6 @@ function searchForChannel(searchVal, cb) {
       cb(channels);
     }
   });
-
-  /*youtube.channels.list({ auth: api.key, part: 'contentDetails, snippet', id: channelName}, function(err, data) {
-    if (data.items.length === 0) {
-      console.log('meh!');
-      return;
-    } else {
-      console.log(data.items[0].snippet.thumbnails.medium.url);
-    }
-  });*/
 }
 
 /**
@@ -117,7 +108,7 @@ function searchForChannel(searchVal, cb) {
 function checkForUpdate(channel) {
   // If last channel update was more than 2 days ago
   if ((moment().diff(channel.updatedAt, 'days')) >= update.interval) {
-    fetchChannelFromApi(channel.name, function(updatedChannel) {
+    fetchChannelFromApi(channel._id, function(updatedChannel) {
       channelController.updateChannel(updatedChannel);
     });
   }
@@ -131,19 +122,20 @@ function checkForUpdate(channel) {
  * @param  {Function} cb          Has channel object
  * @return {void}
  */
-function fetchChannelFromApi(channelName, cb) {
+function fetchChannelFromApi(channelId, cb) {
   var cumVideoViews = 0;
 
   // Dummy object
   var channel = {
-    name: channelName,
+    _id: channelId,
+    name: '',
     thumbnail: '',
     avgVideoViews: 0,
     videos: []
   };
 
   // Get channel with channelName
-  youtube.channels.list({ auth: api.key, part: 'contentDetails, snippet', forUsername: channelName}, function(err, data) {
+  youtube.channels.list({ auth: api.key, part: 'contentDetails, snippet, statistics', id: channelId}, function(err, data) {
 
     // Return if channel doesn't exist or does not have videos
     if (data.items.length === 0) {
@@ -152,6 +144,10 @@ function fetchChannelFromApi(channelName, cb) {
     }
 
     var uploadPlaylistId = data.items[0].contentDetails.relatedPlaylists.uploads;
+    var totalVideosCount = data.items[0].statistics.videoCount;
+
+    //Set channel name
+    channel.name = data.items[0].snippet.title;
 
     // Set channel thumbnail
     channel.thumbnail =  data.items[0].snippet.thumbnails.medium.url;
@@ -185,7 +181,7 @@ function fetchChannelFromApi(channelName, cb) {
           videoCount++;
 
           // Check if all requests are finished and call cb
-          if (videoCount === 50) {
+          if (videoCount === 50 || videoCount == totalVideosCount) {
             // Add average number of views a video on this channel has
             channel.avgVideoViews = Math.floor(cumVideoViews/api.numOfVideos);
 

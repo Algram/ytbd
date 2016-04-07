@@ -5,15 +5,15 @@ var ChannelController = {
     var channel = new Channel(channelObj);
     channel.save();
   },
-  removeChannel: function(channelName, cb) {
-    Channel.findOne({'_id': channelName}).exec(function(err, ch) {
+  removeChannel: function(channelId, cb) {
+    Channel.findOne({'_id': channelId}).exec(function(err, ch) {
       ch.remove(function () {
         cb();
       });
     });
   },
-  getChannel: function(channelName, cb) {
-    Channel.findOne({'_id': channelName}).exec(function(err, res) {
+  getChannel: function(channelId, cb) {
+    Channel.findOne({'_id': channelId}).exec(function(err, res) {
       if (!err) {
         cb(res);
       } else {
@@ -23,14 +23,14 @@ var ChannelController = {
   },
   updateChannel: function(channelObj) {
     Channel.findOneAndUpdate(
-      {'_id': channelObj.name},
+      {'_id': channelObj._id},
       channelObj,
       function(err, doc){
         if (err) return console.log(err);
       });
   },
-  exists: function(channelName, cb) {
-    Channel.count({'_id': channelName}).exec(function(err, count) {
+  exists: function(channelId, cb) {
+    Channel.count({'_id': channelId}).exec(function(err, count) {
       //If count > 0 return true, else false
       var found = (count > 0) ? true : false;
       cb(found);
@@ -42,6 +42,7 @@ var ChannelController = {
       for (var i = 0; i < res.length; i++) {
         var channel = res[i];
         channelInfo.push({
+          _id: channel._id,
           name: channel.name,
           thumbnail: channel.thumbnail,
           avgVideoViews: channel.avgVideoViews

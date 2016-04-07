@@ -1,4 +1,13 @@
 $(document).ready(function() {
+  //Initials
+  $('#channelList li a').removeClass('active');
+  $('#channelList li a:first').addClass('active');
+  var seekbar = document.getElementById('playerProgress');
+  seekbar.onchange = seekVideo;
+  seekbar.value = 0;
+  $('input[type=range]').css({
+    'background-size': '0% 100%'
+  });
 
   $('input[type=range]').on('input', function(e){
     var min = e.target.min,
@@ -46,9 +55,6 @@ $(document).ready(function() {
     togglePlayer();
   }
 
-  var seekbar = document.getElementById('playerProgress');
-  seekbar.onchange = seekVideo;
-
   function seekVideo() {
     var videoNewTime = Math.floor((seekbar.value/100) * player.getDuration());
     player.seekTo(videoNewTime);
@@ -76,29 +82,30 @@ $(document).ready(function() {
   if ($(location).attr('hash').slice(1)) {
     loadVideos($(location).attr('hash').slice(1), function() {});
   } else {
-    loadVideos($('#channelList li a:first').text(), function() {});
+    loadVideos($('#channelList li a:first').data('id'), function() {});
   }
 
   $('#channelList li a').on('click', function(e) {
     $('#channelList li a').removeClass('active');
     $(this).addClass('active');
-    var channelName = $(this).text();
+    var channelId = $(this).data('id');
+    location.replace('#' + channelId);
 
-    loadVideos(channelName, function() {});
+    loadVideos(channelId, function() {});
   });
 
   $('#addChannelModal').on('click', '.confirm', function(e) {
-    var channelName = $('#addChannelModal input').val();
+    var channelId = $('#addChannelModal img.selected').data('id');
 
-    loadVideos(channelName, function() {
-        location.replace('#' + channelName);
+    loadVideos(channelId, function() {
+        location.replace('#' + channelId);
         location.reload();
     });
   });
 
   $('#addChannelModal input').keypress(function (e) {
   if (e.which == 13) {
-    return false;    //<---- Add this line
+    return false;
   }
 });
 
@@ -106,9 +113,9 @@ $(document).ready(function() {
     $.ajax({
       method: 'POST',
       url: '/channel/remove',
-      data: { name: $(this).parent().text()}
+      data: { id: $(this).parent().data('id')}
     }).done(function() {
-      location.replace('#' + $('#channelList li a:first').text());
+      location.replace('#' + $('#channelList li a:first').data('id'));
       location.reload();
     });
   });
@@ -131,16 +138,16 @@ $(document).ready(function() {
       url: '/channel/search',
       data: { searchVal: searchVal}
     }).done(function(channels) {
-      console.log(channels);
-
       for (var i = 0; i < channels.length; i++) {
         var channel = channels[i];
-        $('#addChannelModal .results').append('<img src="' + channel.thumbnail + '" height="100" width="100">');
+        $('#addChannelModal .results').append(
+          '<img src="' + channel.thumbnail + '" height="100" width="100" data-id="' + channel.id + '">'
+        );
       }
     });
   }
 
-  function loadVideos(channelName, cb) {
+  function loadVideos(channelId, cb) {
     clearPage();
     var loadingTimer = setTimeout(function() {
         $('.loading').show();
@@ -149,13 +156,13 @@ $(document).ready(function() {
     $.ajax({
       method: 'POST',
       url: '/channel/add',
-      data: { name: channelName}
+      data: { id: channelId}
     }).done(function(channel) {
       clearTimeout(loadingTimer);
       $('.loading').hide();
 
       $('.header img').attr('src', channel.thumbnail).show();
-      $('.header h1').text(channel._id).show();
+      $('.header h1').text(channel.name).show();
 
       for (var key in channel.videos) {
         var video = channel.videos[key];
