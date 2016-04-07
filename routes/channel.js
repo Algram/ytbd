@@ -59,10 +59,43 @@ router.post('/remove', function(req, res) {
   });
 });
 
+router.post('/search', function(req, res, next) {
+  var searchVal = req.body.searchVal;
+
+  if (searchVal !== undefined) {
+
+    searchForChannel(searchVal, function(data) {
+      res.send(data);
+    });
+  } else {
+    res.send();
+  }
+});
+
 
 ///////////////
 // Functions //
 ///////////////
+
+function searchForChannel(searchVal, cb) {
+  youtube.search.list({ auth: api.key, part: 'snippet', q: channelName, type: 'channel'}, function(err, data) {
+    if (data.items.length === 0) {
+      cb(null);
+      return;
+    } else {
+      cb(data.items);
+    }
+  });
+
+  /*youtube.channels.list({ auth: api.key, part: 'contentDetails, snippet', id: channelName}, function(err, data) {
+    if (data.items.length === 0) {
+      console.log('meh!');
+      return;
+    } else {
+      console.log(data.items[0].snippet.thumbnails.medium.url);
+    }
+  });*/
+}
 
 /**
  * Checks if an update is needed and starts it
@@ -102,7 +135,6 @@ function fetchChannelFromApi(channelName, cb) {
 
     // Return if channel doesn't exist or does not have videos
     if (data.items.length === 0) {
-      console.log('beep1');
       cb(null, 'Channel does not exist.');
       return;
     }
