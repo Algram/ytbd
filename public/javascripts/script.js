@@ -116,6 +116,7 @@ $(document).ready(function() {
   // Search
 
   $('#searchGroup span').on('click', 'button',function(e) {
+    $('#addChannelModal .results').empty();
     searchChannel($(this).parent().siblings('input').val());
   });
 
@@ -124,8 +125,13 @@ $(document).ready(function() {
       method: 'POST',
       url: '/channel/search',
       data: { searchVal: searchVal}
-    }).done(function(data) {
-      console.log(data);
+    }).done(function(channels) {
+      console.log(channels);
+
+      for (var i = 0; i < channels.length; i++) {
+        var channel = channels[i];
+        $('#addChannelModal .results').append('<img src="' + channel.thumbnail + '" height="100" width="100">');
+      }
     });
   }
 

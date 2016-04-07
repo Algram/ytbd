@@ -26,6 +26,18 @@ body {
   margin-top:100px;
 }
 
+#addChannelModal {
+  .results {
+    margin-top: 10px;
+  }
+
+  img {
+    padding: 4px;
+    border: 1px solid #9c9c9c;
+    margin: 5px;
+  }
+}
+
 #channelList .remove {
   display: none;
   line-height: 21px;
