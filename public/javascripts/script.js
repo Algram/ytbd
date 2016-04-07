@@ -120,6 +120,11 @@ $(document).ready(function() {
     searchChannel($(this).parent().siblings('input').val());
   });
 
+  $('#addChannelModal .results').on('click', 'img',function(e) {
+    $(this).siblings().removeClass('selected');
+    $(this).addClass('selected');
+  });
+
   function searchChannel(searchVal) {
     $.ajax({
       method: 'POST',
