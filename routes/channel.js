@@ -35,9 +35,13 @@ router.post('/add', function(req, res, next) {
           res.send(channel);
         });
       } else {
-        fetchChannelFromApi(channelName, function(channel) {
-          channelController.addChannel(channel);
-          res.send(channel);
+        fetchChannelFromApi(channelName, function(channel, err) {
+          if (!err) {
+            channelController.addChannel(channel);
+            res.send(channel);
+          } else {
+            res.status(404).send(err);
+          }
         });
       }
     });
@@ -98,6 +102,8 @@ function fetchChannelFromApi(channelName, cb) {
 
     // Return if channel doesn't exist or does not have videos
     if (data.items.length === 0) {
+      console.log('beep1');
+      cb(null, 'Channel does not exist.');
       return;
     }
 

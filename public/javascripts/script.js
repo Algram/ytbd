@@ -103,7 +103,6 @@ $(document).ready(function() {
 });
 
   $('#channelList').on('click', '.remove', function(e) {
-    console.log($(this).parent().text());
     $.ajax({
       method: 'POST',
       url: '/channel/remove',
@@ -116,12 +115,18 @@ $(document).ready(function() {
 
   function loadVideos(channelName, cb) {
     clearPage();
+    var loadingTimer = setTimeout(function() {
+        $('.loading').show();
+    }, 300);
 
     $.ajax({
       method: 'POST',
       url: '/channel/add',
       data: { name: channelName}
     }).done(function(channel) {
+      clearTimeout(loadingTimer);
+      $('.loading').hide();
+
       $('.header img').attr('src', channel.thumbnail).show();
       $('.header h1').text(channel._id).show();
 
@@ -143,6 +148,10 @@ $(document).ready(function() {
       }
 
       cb();
+    }).fail(function (err) {
+        clearTimeout(loadingTimer);
+        $('.loading').hide();
+        $('.videos').append(err.responseText).show();
     });
   }
 
@@ -169,6 +178,7 @@ $(document).ready(function() {
   }
 
   function clearPage() {
+    $('.loading').hide();
     $('.videos').empty();
     $('.videos').hide();
     $('.header img').attr('src', null).hide();
