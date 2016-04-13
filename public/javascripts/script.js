@@ -8,7 +8,12 @@ $(document).ready(function() {
   var seekbar = document.getElementById('playerProgress');
   seekbar.onchange = seekVideo;
   seekbar.value = 0;
-  $('input[type=range]').css({
+
+  var volumebar = document.getElementById('volumeBar');
+  volumebar.onchange = setVolume;
+  volumebar.value = 100;
+
+  $('#playerProgress').css({
     'background-size': '0% 100%'
   });
 
@@ -210,6 +215,11 @@ $(document).ready(function() {
     player.seekTo(videoNewTime);
   }
 
+  function setVolume() {
+    var newVolume = Math.floor((volumebar.value));
+    player.setVolume(newVolume);
+  }
+
   var updating = false;
   function updateUI() {
     if (!updating) {
@@ -217,7 +227,7 @@ $(document).ready(function() {
       setInterval(function(){
         seekbar.value = (player.getCurrentTime()/player.getDuration())*100;
 
-        $('input[type=range]').css({
+        $('#playerProgress').css({
           'background-size': (player.getCurrentTime()/player.getDuration())*100 + '% 100%'
         });
       }, 1000);
