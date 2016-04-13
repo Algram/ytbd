@@ -126,6 +126,11 @@ input[type=range]::-moz-range-thumb {
     top: 11px;
     left: 10px; }
 
+#volumeBar {
+  width: 80px;
+  margin-left: 30px;
+  float: left; }
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   overflow-y: scroll; }
